@@ -1,4 +1,8 @@
 # [START cloudbuild_basic_config]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
