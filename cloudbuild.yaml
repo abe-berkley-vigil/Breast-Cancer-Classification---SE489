@@ -11,5 +11,4 @@ steps:
            '.']
 images: 
 -'us-east1-docker.pkg.dev/mlops489-breastcancer/mlops489breastcancer/breastcancerstart-image:latest'
-
 # [END cloudbuild_basic_config]
