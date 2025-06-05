@@ -9,7 +9,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 
            'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops489breastcancer/myimage', 
-           './docker/train.dockerfile']
+           './docker/']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
