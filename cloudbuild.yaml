@@ -13,5 +13,5 @@ steps:
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
-           'us-east1-docker.pkg.dev/mlops489-breastcancer/mlops489breastcancer']
+           'us-east1-docker.pkg.dev/mlops489-breastcancer/mlops489breastcancer/mlops489breastcancer:latest']
 # [END cloudbuild_basic_config]
