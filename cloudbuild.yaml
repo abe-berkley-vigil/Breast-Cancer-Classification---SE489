@@ -7,13 +7,13 @@ steps:
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 
-           'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops489breastcancer', 
+           'us-east1-docker.pkg.dev/mlops489-breastcancer/mlops489breastcancer', 
            '.']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
-           'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops489breastcancer']
+           'us-east1-docker.pkg.dev/mlops489-breastcancer/mlops489breastcancer']
 
   # Entrypoint, timeout and environment variables
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
