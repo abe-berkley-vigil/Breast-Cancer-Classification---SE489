@@ -1,4 +1,5 @@
 # tests/test_training.py
+
 import os
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from omegaconf import OmegaConf
 import pandas as pd
 import pytest
 from sklearn.linear_model import LogisticRegression
+
 
 # Get the correct paths
 current_file = Path(__file__).resolve()
@@ -25,6 +27,7 @@ if str(project_root) not in sys.path:
 os.environ["PROJ_ROOT"] = str(project_root)
 
 # Import the functions to test
+
 # Import data loading functions
 from breast_cancer_classification.config import RAW_DATA_DIR
 from breast_cancer_classification.dataset import load_data, preprocess_data

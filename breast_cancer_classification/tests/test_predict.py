@@ -1,4 +1,5 @@
 # tests/test_predict.py
+
 import os
 from pathlib import Path
 import pickle
@@ -27,6 +28,7 @@ if str(project_root) not in sys.path:
 os.environ["PROJ_ROOT"] = str(project_root)
 
 # Import the functions to test
+
 # Import data loading functions
 from breast_cancer_classification.config import RAW_DATA_DIR
 from breast_cancer_classification.dataset import load_data, preprocess_data
@@ -35,6 +37,7 @@ from breast_cancer_classification.modeling.predict import (
     generate_feature_importance,
     load_lr_model,
 )
+
 
 # Use the path from config
 TEST_DATASET_PATH = Path(RAW_DATA_DIR) / "dataset.csv"
@@ -74,10 +77,12 @@ def config():
 def trained_model_and_test_data(real_data, config):
     """Create a trained model and test data for prediction testing."""
     from breast_cancer_classification.modeling.train import (
+
         create_lr_model,
         create_test_train_split,
         fit_lr_model,
         scale_data,
+
     )
     
     # Split the data using config parameters
