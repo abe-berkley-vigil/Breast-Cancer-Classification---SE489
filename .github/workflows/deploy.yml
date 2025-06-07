@@ -61,4 +61,5 @@ jobs:
         git config user.name "GitHub Action"
         git add .
         git commit -m "Deploy Streamlit app"
+        git branch -M main
         git push -f https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME main
