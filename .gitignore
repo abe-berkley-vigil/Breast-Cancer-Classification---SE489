@@ -191,6 +191,5 @@ docs/
 reports/
 *.png
 *.pdf
-*.pkl
 experiments/
-models/*.pkl
+
