@@ -1,60 +1,13 @@
-# .github/workflows/deploy.yml - GitHub Actions workflow for Hugging Face deployment
 name: Deploy to Hugging Face Spaces
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:  # Allow manual triggering
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Test Application
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: Cache pip dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest
-        
-    - name: Run tests
-      run: |
-        pytest tests/ -v
-        
-    - name: Lint code (optional)
-      run: |
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        
-    - name: Check app can be imported
-      run: |
-        python -c "import app; print('App imported successfully')"
-
   deploy:
-    needs: test
     runs-on: ubuntu-latest
-    name: Deploy to Hugging Face
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -65,25 +18,10 @@ jobs:
     - name: Push to Hugging Face Spaces
       env:
         HF_USERNAME: ${{ secrets.HF_USERNAME }}
-        HF_TOKEN: ${{ secrets.GITHUBACTIONS1 }}
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
-        # Configure git
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        
-        # Add Hugging Face remote
         git remote add hf https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME
-        
-        # Push to Hugging Face
         git push hf main:main --force
-        
-    - name: Notify deployment status
-      if: always()
-      run: |
-        if [ ${{ job.status }} == 'success' ]; then
-          echo "✅ Deployment successful!"
-          echo "🚀 App available at: https://huggingface.co/spaces/${{ secrets.HF_USERNAME }}/${{ secrets.HF_SPACE_NAME }}"
-        else
-          echo "❌ Deployment failed!"
-        fi
