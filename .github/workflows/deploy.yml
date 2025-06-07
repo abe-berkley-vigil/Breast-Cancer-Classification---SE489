@@ -65,7 +65,7 @@ jobs:
     - name: Push to Hugging Face Spaces
       env:
         HF_USERNAME: ${{ secrets.HF_USERNAME }}
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        HF_TOKEN: ${{ secrets.GITHUBACTIONS1 }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
         # Configure git
