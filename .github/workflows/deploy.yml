@@ -11,17 +11,54 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        lfs: true
         
-    - name: Push to Hugging Face Spaces
+    - name: Create clean deployment directory
+      run: |
+        mkdir -p clean-deploy
+        
+        # Copy only essential files for Streamlit deployment
+        cp st.py clean-deploy/ 2>/dev/null || cp streamlit/st.py clean-deploy/st.py 2>/dev/null || echo "st.py not found"
+        cp requirements.txt clean-deploy/
+        
+        # Copy any .py files from root
+        find . -maxdepth 1 -name "*.py" -exec cp {} clean-deploy/ \;
+        
+        # Copy streamlit folder if it exists
+        if [ -d "streamlit" ]; then
+          cp -r streamlit clean-deploy/
+        fi
+        
+        # Create a simple README for HF
+        cat > clean-deploy/README.md << EOF
+        ---
+        title: Streamlit2
+        emoji: 🏃
+        colorFrom: red
+        colorTo: red
+        sdk: streamlit
+        app_file: st.py
+        pinned: false
+        license: mit
+        python_version: 3.11
+        ---
+        
+        # Breast Cancer Classification App
+        
+        A Streamlit application for breast cancer classification.
+        EOF
+        
+        ls -la clean-deploy/
+        
+    - name: Deploy to Hugging Face
       env:
         HF_USERNAME: ${{ secrets.HF_USERNAME }}
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git remote add hf https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME
-        git push hf main:main --force
+        cd clean-deploy
+        git init
+        git config user.email "action@github.com"
+        git config user.name "GitHub Action"
+        git add .
+        git commit -m "Deploy Streamlit app"
+        git push -f https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME main
